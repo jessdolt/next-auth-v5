@@ -1,4 +1,5 @@
 "use client"
+
 import { useState, useTransition } from "react"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -18,7 +19,7 @@ import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import FormError from "../form-error"
 import FormSuccess from "../form-success"
-import { login } from "@/actions/login"
+import { register } from "@/actions/register"
 
 export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("")
@@ -50,7 +51,7 @@ export const RegisterForm = () => {
           }, 1000)
         )
 
-        const response = await login(values)
+        const response = await register(values)
 
         setError(response?.error)
         setSuccess(response?.success)
