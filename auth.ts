@@ -11,7 +11,29 @@ export const {
   signIn,
   signOut,
 } = NextAuth({
+  pages: {
+    signIn: "/auth/login",
+  },
+  events: {
+    async linkAccount({ user }) {
+      await db.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          emailVerified: new Date(),
+        },
+      })
+    },
+  },
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url
+      return baseUrl
+    },
     async session({ token, session }) {
       if (token.sub && session.user) {
         session.user.id = token.sub

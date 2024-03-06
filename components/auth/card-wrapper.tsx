@@ -18,7 +18,7 @@ const CardWrapper: React.FC<CardWrapperProps> = ({
   headerLabel,
   backButtonLabel,
   backButtonHref,
-  showSocial = true,
+  showSocial = false,
 }) => {
   return (
     <Card className="w-[400px] shadow-md">
