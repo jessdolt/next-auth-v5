@@ -19,7 +19,7 @@ export default {
 
           const verifiedPassword = await bcrypt.compare(password, user.password)
 
-          if (verifiedPassword) return user
+          if (verifiedPassword) return { ...user }
         }
 
         return null
