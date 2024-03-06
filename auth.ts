@@ -27,12 +27,19 @@ export const {
     },
   },
   callbacks: {
-    async redirect({ url, baseUrl }) {
-      // Allows relative callback URLs
-      if (url.startsWith("/")) return `${baseUrl}${url}`
-      // Allows callback URLs on the same origin
-      else if (new URL(url).origin === baseUrl) return url
-      return baseUrl
+    async signIn({ user, account }) {
+      // Allow OAuth without email verification
+      if (account?.provider !== "credentials") return true
+
+      if (!user.id) return false
+
+      const existingUser = await getUserById(user.id)
+
+      // Prevent sign in without email verification
+      if (!existingUser?.emailVerified) return false
+
+      // Add 2FA Check
+      return true
     },
     async session({ token, session }) {
       if (token.sub && session.user) {

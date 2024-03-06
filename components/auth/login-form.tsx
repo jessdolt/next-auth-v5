@@ -56,10 +56,10 @@ export const LoginForm = () => {
         )
 
         const response = await login(values)
-
         setError(response?.error)
+
         // TODO: Add when we add 2FA
-        // setSuccess(response?.success)
+        setSuccess(response?.success)
       } catch (e) {
         console.log(e)
       }
