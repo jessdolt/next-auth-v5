@@ -2,7 +2,6 @@
 
 import { signIn } from "@/auth"
 import { getUserByEmail } from "@/data/users"
-import { getVerificationTokenByEmail } from "@/data/verification-token"
 import { sendVerificationEmail } from "@/lib/mail"
 import { generateVerificationToken } from "@/lib/tokens"
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes"
