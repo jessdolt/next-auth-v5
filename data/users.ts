@@ -10,6 +10,7 @@ export const getUserByEmail = async (email: string) => {
 
     return user
   } catch (e) {
+    console.log(e)
     return null
   }
 }
