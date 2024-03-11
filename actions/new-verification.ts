@@ -39,5 +39,5 @@ export const newVerification = async (token: string) => {
     },
   })
 
-  return { sucess: "Email is verified" }
+  return { success: "Email is verified" }
 }

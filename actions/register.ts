@@ -38,7 +38,6 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
       verificationToken.email,
       verificationToken.token
     )
-    console.log(t)
   } catch (e) {
     console.log(e)
   }

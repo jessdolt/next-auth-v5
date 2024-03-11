@@ -1,8 +1,10 @@
 "use client"
 import { newVerification } from "@/actions/new-verification"
 import CardWrapper from "@/components/auth/card-wrapper"
+import FormError from "@/components/form-error"
+import FormSuccess from "@/components/form-success"
 import { useSearchParams } from "next/navigation"
-import React, { useCallback, useEffect } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { BeatLoader } from "react-spinners"
 
 interface NewVerificationProps {
@@ -12,18 +14,32 @@ interface NewVerificationProps {
 }
 
 const NewVerification: React.FC<NewVerificationProps> = () => {
+  const [error, setError] = useState<string | undefined>("")
+  const [success, setSuccess] = useState<string | undefined>("")
   const searchParams = useSearchParams()
   const token = searchParams.get("token")
 
-  const onSubmit = useCallback(() => {
-    if (!token) return
+  const verifyToken = async (token: string) => {
+    if (success || error) return
 
-    newVerification(token)
-  }, [token])
+    try {
+      const response = await newVerification(token)
+
+      setSuccess(response.success)
+      setError(response.error)
+    } catch (e) {
+      setError("Something went wrong")
+    }
+  }
 
   useEffect(() => {
-    onSubmit()
-  }, [onSubmit])
+    if (!token) {
+      setError("Missing token")
+      return
+    }
+
+    verifyToken(token)
+  }, [token, success, error])
 
   return (
     <CardWrapper
@@ -32,7 +48,9 @@ const NewVerification: React.FC<NewVerificationProps> = () => {
       backButtonLabel="Go to login page"
     >
       <div className="flex items-center w-full justify-center">
-        <BeatLoader />
+        {!success && !error && <BeatLoader />}
+        <FormSuccess message={success} />
+        {!success && <FormError message={error} />}
       </div>
     </CardWrapper>
   )
